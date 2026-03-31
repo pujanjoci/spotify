@@ -185,3 +185,31 @@
   from { transform: translateY(0); }
   to   { transform: translateY(-4px); }
 }
+
+/* ─── Session warning toast animation ─── */
+@keyframes session-slide-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+.session-warning {
+  /* ensures correct transform-origin for the slide-up */
+  will-change: transform, opacity;
+}
+
+/* ─── Page transition fade ─── */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: pageFadeIn 0.25s ease forwards;
+}
+

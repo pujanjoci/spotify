@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Home, Search, Library, Plus, LogOut, Music2, User, Upload } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { clearAllCaches } from "@/lib/cache-keys";
 import { useState } from "react";
 import { Playlist } from "@/types";
 import CreatePlaylistModal from "./CreatePlaylistModal";
@@ -20,6 +21,7 @@ export default function Sidebar({ playlists, userId }: SidebarProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleLogout = async () => {
+    clearAllCaches();
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/login");

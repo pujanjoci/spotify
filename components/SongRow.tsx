@@ -1,10 +1,10 @@
 "use client";
 
+import { memo, useState } from "react";
 import Image from "next/image";
 import { Play, Pause, Plus } from "lucide-react";
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { Song } from "@/types";
-import { useState } from "react";
 
 interface SongRowProps {
   song: Song;
@@ -20,7 +20,7 @@ function formatDuration(seconds: number | null) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-export default function SongRow({ song, index, queue, onAddToPlaylist }: SongRowProps) {
+const SongRow = memo(function SongRow({ song, index, queue, onAddToPlaylist }: SongRowProps) {
   const { playSong, currentSong, isPlaying, pauseSong, resumeSong } = usePlayerStore();
   const [hovered, setHovered] = useState(false);
 
@@ -127,4 +127,6 @@ export default function SongRow({ song, index, queue, onAddToPlaylist }: SongRow
       </div>
     </div>
   );
-}
+});
+
+export default SongRow;

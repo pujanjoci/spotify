@@ -1,6 +1,7 @@
 import Sidebar from "@/components/Sidebar";
 import PlayerBar from "@/components/PlayerBar";
 import MobileNav from "@/components/MobileNav";
+import SessionWarning from "@/components/SessionWarning";
 import { createClient } from "@/lib/supabase/server";
 import { getUserPlaylists } from "@/lib/playlists";
 
@@ -35,6 +36,9 @@ export default async function AppLayout({
       <div className="block md:hidden">
         <MobileNav />
       </div>
+
+      {/* Session expiry warning toast — renders only when < 2 min remain */}
+      <SessionWarning />
     </div>
   );
 }

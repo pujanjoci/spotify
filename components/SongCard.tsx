@@ -1,17 +1,17 @@
 "use client";
 
+import { memo, useState } from "react";
 import Image from "next/image";
 import { Play, Pause } from "lucide-react";
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { Song } from "@/types";
-import { useState } from "react";
 
 interface SongCardProps {
   song: Song;
   queue?: Song[];
 }
 
-export default function SongCard({ song, queue }: SongCardProps) {
+const SongCard = memo(function SongCard({ song, queue }: SongCardProps) {
   const { playSong, currentSong, isPlaying, pauseSong, resumeSong } = usePlayerStore();
   const [hovered, setHovered] = useState(false);
 
@@ -152,4 +152,6 @@ export default function SongCard({ song, queue }: SongCardProps) {
       )}
     </div>
   );
-}
+});
+
+export default SongCard;

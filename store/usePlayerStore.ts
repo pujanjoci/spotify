@@ -1,5 +1,19 @@
 import { create } from "zustand";
 import { Song } from "@/types";
+import { CACHE_KEYS } from "@/lib/cache-keys";
+
+/** Read saved volume from localStorage; fall back to 0.8. */
+function getPersistedVolume(): number {
+  if (typeof window === "undefined") return 0.8;
+  try {
+    const v = localStorage.getItem(CACHE_KEYS.PLAYER_VOLUME);
+    if (v === null) return 0.8;
+    const n = parseFloat(v);
+    return isNaN(n) ? 0.8 : Math.min(1, Math.max(0, n));
+  } catch {
+    return 0.8;
+  }
+}
 
 interface PlayerState {
   // Current state
@@ -28,7 +42,8 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   isPlaying: false,
   queue: [],
   currentIndex: 0,
-  volume: 0.8,
+  // Rehydrate volume from localStorage so it survives page refresh
+  volume: getPersistedVolume(),
   progress: 0,
   duration: 0,
 
@@ -82,7 +97,17 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     });
   },
 
-  setVolume: (volume) => set({ volume }),
+  setVolume: (volume) => {
+    // Persist volume preference to localStorage
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.setItem(CACHE_KEYS.PLAYER_VOLUME, String(volume));
+      }
+    } catch {}
+    set({ volume });
+  },
+
   setProgress: (progress) => set({ progress }),
   setDuration: (duration) => set({ duration }),
 }));
+
